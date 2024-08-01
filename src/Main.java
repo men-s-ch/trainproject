@@ -6,7 +6,7 @@ public class Main {
 		
 		while (true) {
 			System.out.println("기차관리 프로그램 입니다");
-			break;
+				break;
+			}
 		}
 	}
-}
