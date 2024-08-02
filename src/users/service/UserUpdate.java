@@ -44,5 +44,6 @@ public class UserUpdate implements Train {
         int su = usersDAO.userUpdate(map);
 
         System.out.println(su + "개의 회원정보를 수정하였습니다.");
+
     }
 }

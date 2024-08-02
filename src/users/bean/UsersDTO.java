@@ -22,6 +22,7 @@ public class UsersDTO {
     public static final String formatPhoneNumber(String phone) {
         if (phone == null || phone.isEmpty()) {
             System.out.println("잘못된 형식의 번호입니다. 다시 입력해주세요.");
+            System.out.println("최신화");
             return null;
         }
 
@@ -30,7 +31,9 @@ public class UsersDTO {
         } else {
             return null;
         }
+
     }
+
 
     @Override
     public String toString() {
