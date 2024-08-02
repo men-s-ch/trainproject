@@ -5,12 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 import train.bean.ReservationDTO;
-import train.bean.TicketDTO;
 import users.bean.UsersDTO;
 import users.dao.UsersDAO;
 
@@ -18,8 +15,8 @@ public class ReservationDAO {
 
 	private String driver = "oracle.jdbc.driver.OracleDriver";
 	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	private String username = "SCOTT";
-	private String password = "tiger";
+	private String username = "c##train";
+	private String password = "1234";
 
 	private Connection con;
 	private PreparedStatement pstmt;
@@ -56,20 +53,11 @@ public class ReservationDAO {
 	}
 
 	public void ticketBuySelect() {
-		
-		// 예약된 기차의 출발 시간을 포함하여 정보를 조회하는 SQL 쿼리
-		 String sql = "SELECT r.res_id, r.user_id, r.train_id, r.res_adult, r.res_child, " +
-                 "r.res_total, r.res_time, r.res_status, t.depature_time " +
-                 "FROM reservations r " +
-                 "JOIN trains t ON r.train_id = t.train_id " +
-                 "WHERE r.user_id = ?";
-		 
-		// 로그인 한 사용자 ID 가져오기
+
+		String sql = "select * from reservations where user_id = ? ";
 		UsersDAO usersDAO = UsersDAO.getInstance();
 		UsersDTO loginPeople = usersDAO.getLoginPeople();
 		String login_id = loginPeople.getUser_Id();
-
-		
 		try {
 			getConnection();
 			pstmt = con.prepareStatement(sql);
@@ -92,30 +80,24 @@ public class ReservationDAO {
 				reservationDTO.setRes_time(rs.getTimestamp("res_time"));
 				reservationDTO.setRes_status(rs.getString("res_status"));
 
-				
-				  // 기차 출발 시간 가져오기
-                Timestamp departureTime = rs.getTimestamp("depature_time");
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				String resTime = sdf.format(departureTime);
-				
-				
 				String check = " ";
 				if ("CONFIRMED".equals(reservationDTO.getRes_status())) {
 					check = "확정";
 				} else if ("CANCELLED".equals(reservationDTO.getRes_status())) {
 					check = "취소";
 				}
-				
-				
-				
+
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String resTime = sdf.format(reservationDTO.getRes_time());
+
 				System.out.println(
 						"----------------------------------------------------------------------------------------------------------------------------------------------------");
 				System.out.print("예약번호 : " + reservationDTO.getRes_id() + " / ");
-				System.out.print("출발시간 : " + resTime + " / ");
+				System.out.print("사용자 ID : " + reservationDTO.getUser_id() + " / ");
 				System.out.print("열차번호 : " + reservationDTO.getTrain_id() + " / ");
 				System.out.print("성인 티켓 : " + reservationDTO.getRes_adult() + "개 / ");
 				System.out.print("어린이 티켓 : " + reservationDTO.getRes_child() + "개 / ");
-				System.out.print("총 금액 : " + new DecimalFormat().format(reservationDTO.getRes_total()) + "원 / ");
+				System.out.print("총 금액 : " + reservationDTO.getRes_total() + "원 / ");
 				System.out.print("예약일자 : " + reservationDTO.getRes_time() + " / ");
 				System.out.println("예약상태 : " + check);
 				System.out.println(
@@ -138,7 +120,7 @@ public class ReservationDAO {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				e.printStackTrace(); 
+				e.printStackTrace(); // 자원 해제 시 예외 처리
 			}
 		}
 

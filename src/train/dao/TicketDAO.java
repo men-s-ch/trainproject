@@ -6,12 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
+import train.bean.ReservationDTO;
 import train.bean.TicketDTO;
 import users.bean.UsersDTO;
 import users.dao.UsersDAO;
@@ -20,8 +19,8 @@ public class TicketDAO {
 
 	private String driver = "oracle.jdbc.driver.OracleDriver";
 	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	private String username = "SCOTT";
-	private String password = "tiger";
+	private String username = "c##train";
+	private String password = "1234";
 
 	private Connection con;
 	private PreparedStatement pstmt;
@@ -57,9 +56,6 @@ public class TicketDAO {
 		return instance;
 	}
 
-	
-	
-	 // 기차에 데이터 삽입
 	public String insertTicket(TicketDTO ticketdto) {
 		String result = "데이터 삽입 실패";
 		String sql = "INSERT INTO trains (train_id, train_name, depature_station, arrival_station, depature_time, max_seat, type_adult, type_kid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -104,68 +100,7 @@ public class TicketDAO {
 	}
 
 	
-	// 사용자가 예매할때 보여지는 티켓 리스트
 	public void selectTicket() {
-		// 지난시간은 표시 안함
-		String sql = "SELECT * FROM trains WHERE depature_time > SYSDATE";
-
-		try {
-			getConnection();
-			pstmt = con.prepareStatement(sql);
-			rs = pstmt.executeQuery();
-
-			boolean hasRecords = false;
-			while (rs.next()) {
-				hasRecords = true;
-
-				TicketDTO ticketDTO = new TicketDTO();
-				ticketDTO.setTrain_id(rs.getString("train_id"));
-				ticketDTO.setTrain_name(rs.getString("train_name"));
-				ticketDTO.setDepature_station(rs.getString("depature_station"));
-				ticketDTO.setArrival_station(rs.getString("arrival_station"));
-				ticketDTO.setDeparture_time(rs.getTimestamp("depature_time"));
-				ticketDTO.setMax_seat(rs.getInt("max_seat"));
-				ticketDTO.setType_adult(rs.getInt("type_adult"));
-				ticketDTO.setType_kid(rs.getInt("type_kid"));
-
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				String startTime = sdf.format(ticketDTO.getDeparture_time());
-
-				System.out.println(
-						"--------------------------------------------------------------------------------------------------------------------------------------------");
-				System.out.print("열차번호 : " + ticketDTO.getTrain_id() + " / ");
-				System.out.print("열차이름 : " + ticketDTO.getTrain_name() + " / ");
-				System.out.print("출발역 : " + ticketDTO.getDepature_station() + " / ");
-				System.out.print("도착역 : " + ticketDTO.getArrival_station() + " / ");
-				System.out.print("출발시간 : " + startTime + " / ");
-				System.out.print("남은 좌석 수 : " + ticketDTO.getMax_seat() + " / ");
-				System.out.print("성인 : " + new DecimalFormat().format(ticketDTO.getType_adult()) + "원 / ");
-				System.out.println("어린이 : " + new DecimalFormat().format(ticketDTO.getType_kid()) + "원 ");
-				System.out.println(
-						"--------------------------------------------------------------------------------------------------------------------------------------------");
-			}
-
-			if (!hasRecords) {
-				System.out.println("등록된 열차 정보가 없습니다.");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace(); // SQL 예외 처리
-		} finally {
-			try {
-				if (rs != null)
-					rs.close();
-				if (pstmt != null)
-					pstmt.close();
-				if (con != null)
-					con.close();
-			} catch (SQLException e) {
-				e.printStackTrace(); // 자원 해제 시 예외 처리
-			}
-		}
-	}
-
-	// 관리자 조회화면
-	public void adminSelectTicket() {
 		String sql = "SELECT * FROM trains";
 
 		try {
@@ -198,8 +133,8 @@ public class TicketDAO {
 				System.out.print("도착역 : " + ticketDTO.getArrival_station() + " / ");
 				System.out.print("출발시간 : " + startTime + " / ");
 				System.out.print("남은 좌석 수 : " + ticketDTO.getMax_seat() + " / ");
-				System.out.print("성인 : " + new DecimalFormat().format(ticketDTO.getType_adult()) + "원 / ");
-				System.out.println("어린이 : " + new DecimalFormat().format(ticketDTO.getType_kid()) + "원 ");
+				System.out.print("성인 : " + ticketDTO.getType_adult() + "원 / ");
+				System.out.println("어린이 : " + ticketDTO.getType_kid() + "원 ");
 				System.out.println(
 						"--------------------------------------------------------------------------------------------------------------------------------------------");
 			}
@@ -235,8 +170,8 @@ public class TicketDAO {
 		}
 	}
 
-	// 열차 번호 ID(A101) 가져오는 메소드
-	public TicketDTO getTicketTrain_Id(String Train_id) {
+	// 열차 구매 열차 번호 ID 가져오는 메소드
+	public TicketDTO getTicketTrain_Id(String Train_id) {  //열차 번호
 
 		TicketDTO ticketDTO = null;
 
@@ -259,10 +194,7 @@ public class TicketDAO {
 				ticketDTO.setMax_seat(rs.getInt("max_seat"));
 				ticketDTO.setType_adult(rs.getInt("type_adult"));
 				ticketDTO.setType_kid(rs.getInt("type_kid"));
-
-				// 열차 출발정보 담아가기
-
-			}
+			} 
 
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -275,15 +207,13 @@ public class TicketDAO {
 				if (con != null)
 					con.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				e.printStackTrace(); // 자원 해제 시 예외 처리
 			}
 		}
 
 		return ticketDTO;
 	}
 
-	
-	// 사용자가 티켓 구매하는 과정
 	public String ticketBuyService(String train_id, int ticket_adult, int ticket_child) {
 		String result = "예매 실패";
 
@@ -324,19 +254,18 @@ public class TicketDAO {
 
 					// 3. 예약 정보 삽입
 					String reservationId = randomResId(); // 고유 예약 ID 생성
-					Date now = new Date();
-					Timestamp reservationDate = new Timestamp(now.getTime());
-
+					Timestamp reservationDate = new Timestamp(System.currentTimeMillis());
+					
 					// user__name 가져오기
-
+				
 					// 로그인 된 사용자 정보 호출
 					UsersDAO usersDAO = UsersDAO.getInstance();
 					UsersDTO loginPeople = usersDAO.getLoginPeople();
 					String login_id = loginPeople.getUser_Id();
-
+					
 					pstmt = con.prepareStatement(insertReservationSql);
 					pstmt.setString(1, reservationId);
-					pstmt.setString(2, login_id);
+					pstmt.setString(2, login_id); 
 					pstmt.setString(3, train_id);
 					pstmt.setInt(4, ticket_adult);
 					pstmt.setInt(5, ticket_child);
@@ -381,7 +310,7 @@ public class TicketDAO {
 			// 0부터 999까지의 난수를 생성
 			int randomNumber = random.nextInt(1000);
 
-			// 예약 ID 형식으로 변환 (예: RES123)
+			// 예약 ID 형식으로 변환 (예: RES000123)
 			resId = String.format("RES%03d", randomNumber);
 
 			// 데이터베이스에서 예약 ID의 유일성을 확인
@@ -416,36 +345,75 @@ public class TicketDAO {
 		return false;
 	}
 
-	// 티켓 삭제 메서드
-	public boolean deleteTicket(String train_id) {
-		boolean success = false;
+	
+	
+	// 티켓 취소
+	public void statusChage(String cancleTicket) {
 
+		getConnection();
+		
+		String sql = "update reservations set res_status='CANCELLED' where res_id= ?";
+		
 		try {
-			getConnection();
-
-			// SQL 쿼리 작성
-			String sql = "DELETE FROM trains WHERE train_id = ?";
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, train_id);
+			
+			pstmt.setString(1, cancleTicket);
+			
+			pstmt.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt!=null) pstmt.close();
+				if(con!=null) con.close();				
+			} catch(SQLException e ) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-			// SQL 실행
-			int rowsAffected = pstmt.executeUpdate();
-			success = (rowsAffected > 0); // 1 이상의 행이 영향을 받으면 성공
+	
+// 취소한 열차표 가져오기
+	public ReservationDTO selectCancleTicket(String cancleTicket) {
+		getConnection();
+		
+		ReservationDTO reservationDTO = new ReservationDTO();
+		
+		String sql = "select * from reservations where res_id = ? ";
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, cancleTicket);
+			
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				reservationDTO.setRes_id(rs.getString("res_id"));
+				reservationDTO.setUser_id(rs.getString("user_id"));
+				reservationDTO.setTrain_id(rs.getString("train_id"));
+				reservationDTO.setRes_adult(rs.getInt("res_adult"));
+				reservationDTO.setRes_child(rs.getInt("res_child"));
+				reservationDTO.setRes_total(rs.getInt("res_total"));
+				reservationDTO.setRes_time(rs.getTimestamp("res_time"));
+				reservationDTO.setRes_status(rs.getString("res_status"));
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (pstmt != null)
-					pstmt.close();
-				if (con != null)
-					con.close();
+				if (rs != null)	rs.close();
+				if (pstmt != null) pstmt.close();
+				if (con != null) con.close();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				e.printStackTrace(); 
 			}
 		}
-
-		return success;
+		
+		return reservationDTO;
 	}
-
+	
+	
+	
 }

@@ -5,7 +5,7 @@ import java.util.Scanner;
 import train.bean.TicketDTO;
 import train.dao.TicketDAO;
 
-public class TicketBuyService implements Train, users.service.Train {
+public class TicketBuyService implements Train, users.service.Train { //* 누구꺼 가져오는거지?
 	@Override
 	public void execute() {
 		Scanner scanner = new Scanner(System.in);
@@ -18,13 +18,8 @@ public class TicketBuyService implements Train, users.service.Train {
 		String train_Id;
 		
 		while(true) {
-			System.out.print("예매할 열차 번호를 입력하세요 ( q 누르면 이전 메뉴이동) : ");
+			System.out.print("예매할 열차 번호를 입력하세요 : ");
 			train_Id = scanner.nextLine();			
-			
-			if(train_Id.equalsIgnoreCase("q")) {
-				System.out.println("메뉴로 이동합니다.");
-				return;
-			}
 			
 			ticketDTO = ticketDAO.getTicketTrain_Id(train_Id); // 열차 정보 조회
 			
