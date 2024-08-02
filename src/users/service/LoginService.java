@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import train.service.TicketBuySelect;
 import train.service.TicketBuyService;
+import train.service.TicketCancle;
 import train.service.TicketInsertService;
 import train.service.TicketSelectService;
 
@@ -36,7 +37,7 @@ public class LoginService {
 			} else if (num == 2) {
 				train = new TicketBuySelect();
 			} else if (num == 3) {
-
+				train = new TicketCancle();
 			} else if (num == 4) {
 				train = new UserUpdate();
 			} else {
@@ -50,36 +51,31 @@ public class LoginService {
 	}
 
 	public void adminlogin() {
-        while (true) {
-            System.out.println("****************************************");
-            System.out.println("****************************************");
-            System.out.println("              (1)열차 등록");
-            System.out.println();
-            System.out.println("              (2)등록된 열차 조회");
-            System.out.println();
-            System.out.println("              (3)예매 취소 승인");
-            System.out.println();
-            System.out.println("              (4)이전 메뉴로 이동");
-            System.out.println("****************************************");
-            System.out.println("****************************************");
-            System.out.print("번호를 입력해주세요 :");
-            num = scan.nextInt();
-            if (num == 4) {
-                return;
-            } else if (num == 1) {
-            	train = new TicketInsertService();
-            } else if (num == 2) {
-            	train = new TicketSelectService();
-            }else if(num == 3){
+		while (true) {
+			System.out.println("****************************************");
+			System.out.println("****************************************");
+			System.out.println("              (1)열차 등록");
+			System.out.println();
+			System.out.println("              (2)등록된 열차 조회");
+			System.out.println();
+			System.out.println("              (3)이전 메뉴로 이동");
+			System.out.println("****************************************");
+			System.out.println("****************************************");
+			System.out.print("번호를 입력해주세요 :");
+			num = scan.nextInt();
+			if (num == 3) {
+				return;
+			} else if (num == 1) {
+				train = new TicketInsertService();
+			} else if (num == 2) {
+				train = new TicketSelectService();
+			} else {
+				System.out.println("잘못된 번호를 입력하셨습니다.");
+				continue;
+			}
+			train.execute();
 
-            }
-            else {
-                System.out.println("잘못된 번호를 입력하셨습니다.");
-                continue;
-            }
-            train.execute();
+		}
 
-        }
-
-    }
+	}
 }
