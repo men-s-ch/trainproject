@@ -2,9 +2,13 @@ package train.bean;
 
 import java.sql.Timestamp;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class ReservationDTO {
@@ -16,4 +20,6 @@ public class ReservationDTO {
 	private int res_total;
 	private Timestamp res_time;
 	private String res_status;
+	
+	
 }
