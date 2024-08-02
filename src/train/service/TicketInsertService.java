@@ -10,7 +10,7 @@ import java.util.Scanner;
 import train.bean.TicketDTO;
 import train.dao.TicketDAO;
 
-public class TicketInsertService implements Train {
+public class TicketInsertService implements Train, users.service.Train {
 
 	@Override
 	public void execute() {
@@ -23,8 +23,24 @@ public class TicketInsertService implements Train {
 		System.out.println(
 				"============================================================현재 등록된 열차 정보==================================================================");
 		ticketDAO.selectTicket(); // 해당 열차 정보를 조회하고 출력
-		System.out.print("등록 할 열차 번호 입력 : ");
-		String train_id = scan.nextLine();
+		String train_id;
+
+		while(true) {
+			System.out.print("등록 할 열차 번호 입력(이전메뉴 q입력) : ");
+			train_id = scan.nextLine();
+			if(train_id.equalsIgnoreCase("q")) {
+				return;
+			}
+			// 열차 번호 중복 체크
+			TicketDTO ticketDTO = ticketDAO.getTicketTrain_Id(train_id);
+			if(ticketDTO != null) {
+				System.out.println("해당 열차번호는 이미 등록되어 있습니다 다시 입력해주세요.");
+			}else {
+				break;
+			}
+			
+		}
+
 		System.out.print("등록 할 열차 이름 입력 : ");
 		String train_name = scan.nextLine();
 		System.out.print("등록 할 열차 출발지 입력 : ");

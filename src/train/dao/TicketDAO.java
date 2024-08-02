@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Random;
 
 import train.bean.TicketDTO;
+import users.bean.UsersDTO;
+import users.dao.UsersDAO;
 
 public class TicketDAO {
 
@@ -96,6 +98,7 @@ public class TicketDAO {
 		return result;
 	}
 
+	
 	public void selectTicket() {
 		String sql = "SELECT * FROM trains";
 
@@ -251,11 +254,17 @@ public class TicketDAO {
 					// 3. 예약 정보 삽입
 					String reservationId = randomResId(); // 고유 예약 ID 생성
 					Timestamp reservationDate = new Timestamp(System.currentTimeMillis());
-
+					
+					// user__name 가져오기
+				
+					// 로그인 된 사용자 정보 호출
+					UsersDAO usersDAO = UsersDAO.getInstance();
+					UsersDTO loginPeople = usersDAO.getLoginPeople();
+					String login_id = loginPeople.getUser_Id();
+					
 					pstmt = con.prepareStatement(insertReservationSql);
 					pstmt.setString(1, reservationId);
-					pstmt.setString(2, "홍길동"); // //MemberDTO memberdto = new MemberDTO(); memberDTO.getUser_id
-					// rs.next(); memberdto = new MemberDTO(rs.getString(user_id));
+					pstmt.setString(2, login_id); 
 					pstmt.setString(3, train_id);
 					pstmt.setInt(4, ticket_adult);
 					pstmt.setInt(5, ticket_child);
