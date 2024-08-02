@@ -18,7 +18,7 @@ public class TrainService {
             System.out.println();
             System.out.println("              2. 로그인                  ");
             System.out.println();
-            System.out.println("              3. 나가기                  ");
+            System.out.println("              3. 나가기                ");
             System.out.println("****************************************");
             System.out.println("****************************************");
             System.out.print("번호를 입력해주세요 : ");

@@ -11,7 +11,6 @@ public class UserSignIn implements Train {
         LoginService loginService = new LoginService();
         System.out.println();
         Scanner scan = new Scanner(System.in);
-
         System.out.print("아이디를 입력하세요 : ");
         String user_Id = scan.next();
         System.out.print("비밀번호를 입력하세요 : ");
@@ -35,12 +34,20 @@ public class UserSignIn implements Train {
             System.out.println();
 
                 if (select.equalsIgnoreCase("Y")) {
-                    System.out.print("이름을 입력하세요 :");
-                    String userName = scan.next();
-                    System.out.println("핸드폰번호를 입력하세요(010-xxxx-xxxx) :");
-                    String phone = scan.next();
-                    usersDAO.findInfo(userName,phone);
-                    return;
+                    while (true) {
+                        System.out.print("이름을 입력하세요 :");
+                        String userName = scan.next();
+                        System.out.print("핸드폰번호를 입력하세요 :");
+                        String phone = scan.next();
+                        String formattedPhone = UsersDTO.formatPhoneNumber(phone);
+                        if (formattedPhone == null) {
+                            System.out.println("잘못된 형식의 번호입니다. 다시 입력해주세요");
+                            continue;
+                        }else {
+                            usersDAO.findInfo(userName,formattedPhone);
+                            return;
+                        }
+                    }
                 }else if(select.equalsIgnoreCase("N")){
                     return;
                 }else {

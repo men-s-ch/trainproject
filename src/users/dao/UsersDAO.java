@@ -8,8 +8,8 @@ import java.util.Map;
 public class UsersDAO {
     private String driver = "oracle.jdbc.driver.OracleDriver";
     private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-    private String username = "c##java";
-    private String password = "1234";
+    private String username = "SCOTT";
+    private String password = "tiger";
 
     private Connection con;
     private PreparedStatement pstmt;
@@ -94,15 +94,15 @@ public class UsersDAO {
         return exist;
     }
     //가입된 전화번호
-    public boolean existPhone(String phone) {
+    public boolean existPhone(String formattedPhone) {
         boolean exist = false;
 
-        getConnection();
-        String sql = "select *  from users where phone=?";
 
-        try {
+        try{
+            getConnection();
+            String sql = "SELECT * FROM users WHERE phone = ?";
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1,phone);
+            pstmt.setString(1,formattedPhone);
 
             rs = pstmt.executeQuery();
 
@@ -121,8 +121,8 @@ public class UsersDAO {
         return exist;
     }
     //아이디 비밀번호 찾기
-    public void findInfo(String username , String phone) {
-        UsersDTO usersDTO = new UsersDTO();
+    public void findInfo(String username , String fomattedPhone) {
+
         String user_Id = null;
         String password= null;
         getConnection();
@@ -131,7 +131,7 @@ public class UsersDAO {
         try {
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1,username);
-            pstmt.setString(2,phone);
+            pstmt.setString(2,fomattedPhone);
             rs = pstmt.executeQuery();
 
             if (rs.next()) {

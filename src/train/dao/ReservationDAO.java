@@ -15,8 +15,8 @@ public class ReservationDAO {
 
 	private String driver = "oracle.jdbc.driver.OracleDriver";
 	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-	private String username = "c##java";
-	private String password = "1234";
+	private String username = "SCOTT";
+	private String password = "tiger";
 
 	private Connection con;
 	private PreparedStatement pstmt;

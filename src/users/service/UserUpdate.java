@@ -28,13 +28,17 @@ public class UserUpdate implements Train {
         System.out.println();
         System.out.print("새로운 비밀번호를 입력하세요 : ");
         String password = scan.next();
-        System.out.print("새로운 핸드폰 번호를 입력하세요(010-xxxx-xxxx) : ");
-        String phone = scan.next();
 
+        System.out.print("새로운 핸드폰 번호를 입력하세요 : ");
+       String phone = scan.next();
+        String formattedPhone = UsersDTO.formatPhoneNumber(phone);
+        if (formattedPhone == null) {
+            System.out.println("잘못된 형식의 번호입니다. 다시 입력해주세요.");
+        }
 
         Map<String,String> map = new HashMap<>();
         map.put("password",password);
-        map.put("phone",phone);
+        map.put("phone",formattedPhone);
         map.put("user_id",user_Id);
 
         int su = usersDAO.userUpdate(map);
