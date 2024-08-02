@@ -1,4 +1,4 @@
-package service;
+package users.service;
 
 import java.util.Scanner;
 
@@ -23,12 +23,16 @@ public class TrainService {
             System.out.println("****************************************");
             System.out.print("번호를 입력해주세요 : ");
             num = scan.nextInt();
-                if (num == 3) break;
+                if (num == 3){
+                    System.out.println();
+                    System.out.println("이용해주셔서 감사합니다.");
+                    break;
+                }
                 else if (num == 1){
-                    train = new TrainSignUp();
+                    train = new UserSignUp();
                 }
                 else if (num == 2){
-                    train = new TrainSignIn();
+                    train = new UserSignIn();
                 }
                 else{
                     System.out.println("잘못 입력하셨습니다. 올바른 번호를 입력 부탁드립니다.");
