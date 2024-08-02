@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
 import train.bean.ReservationDTO;
+import users.bean.UsersDTO;
+import users.dao.UsersDAO;
 
 public class ReservationDAO {
 
@@ -52,11 +54,14 @@ public class ReservationDAO {
 
 	public void ticketBuySelect() {
 
-		String sql = "select * from reservations";
-
+		String sql = "select * from reservations where user_id = ? ";
+		UsersDAO usersDAO = UsersDAO.getInstance();
+		UsersDTO loginPeople = usersDAO.getLoginPeople();
+		String login_id = loginPeople.getUser_Id();
 		try {
 			getConnection();
 			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, login_id);
 			rs = pstmt.executeQuery();
 
 			boolean hasRecords = false;

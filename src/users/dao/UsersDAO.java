@@ -8,13 +8,15 @@ import java.util.Map;
 public class UsersDAO {
     private String driver = "oracle.jdbc.driver.OracleDriver";
     private String url = "jdbc:oracle:thin:@localhost:1521:xe";
-    private String username = "SCOTT";
-    private String password = "tiger";
+    private String username = "c##java";
+    private String password = "1234";
 
     private Connection con;
     private PreparedStatement pstmt;
     private ResultSet rs;
     private static UsersDAO instance = new UsersDAO();//싱글톤 잡기술
+    
+    private UsersDTO loginPeople;
 
     //싱글톤
     public static UsersDAO getInstance() {
@@ -175,6 +177,11 @@ public class UsersDAO {
                 usersDTO.setUserName(rs.getString("username"));
                 usersDTO.setIs_admin(rs.getInt("is_admin"));
 
+                
+                // 로그인 사용자 정보 저장
+                usersDTO.setUser_Id(rs.getString("user_id"));
+                loginPeople = usersDTO;
+                
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -189,6 +196,12 @@ public class UsersDAO {
         }
         return usersDTO;
     }
+    
+    public UsersDTO getLoginPeople() {
+    	return loginPeople;
+    }
+
+    
     //update
     public UsersDTO getUsers(String user_Id) {
         UsersDTO usersDTO = null;

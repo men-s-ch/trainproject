@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 import train.dao.TicketDAO;
 
-public class TicketSelectService implements Train {
+public class TicketSelectService implements Train, users.service.Train {
 
 	@Override
 	public void execute() {
