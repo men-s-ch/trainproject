@@ -25,7 +25,7 @@ public class TicketCancle implements Train{
 		ReservationDAO reservationDAO = new ReservationDAO();
 		reservationDAO.ticketBuySelect();
 		//------------------------------------
-	    System.out.print("취소 하고 싶은 표를 선택하세요 :");
+	    System.out.print("취소 하고 싶은 표를 선택하세요(예약번호) :");
 	    String cancleTicket = scan.next();
 	    System.out.println();
 	    System.out.println(">> 예매 취소 하시겠습니까??? [1]네 / [2] 아니요");

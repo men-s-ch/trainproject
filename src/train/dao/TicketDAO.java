@@ -164,7 +164,7 @@ public class TicketDAO {
 
 	// 관리자 조회화면
 	public void adminSelectTicket() {
-		String sql = "SELECT * FROM trains";
+		String sql = "SELECT * FROM trains order by depature_time asc";
 
 		try {
 			getConnection();

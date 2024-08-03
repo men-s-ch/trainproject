@@ -61,7 +61,8 @@ public class UsersDAO {
                 if (pstmt != null) pstmt.close();
                 if (con != null) con.close();
             } catch (SQLException e) {
-                e.printStackTrace();
+               // e.printStackTrace();
+                System.out.println("잘못된 형식입니다.");
             }
         }
         return su;
