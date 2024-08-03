@@ -251,7 +251,9 @@ public class UsersDAO {
             su = pstmt.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+//        	수정 내역
+//            e.printStackTrace();
+        	System.out.println("잘못입력했습니다.");
         }finally {
             try {
                 if(pstmt != null) pstmt.close();
