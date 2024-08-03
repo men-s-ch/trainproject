@@ -5,6 +5,7 @@ import java.util.Scanner;
 import train.service.TicketBuySelect;
 import train.service.TicketBuyService;
 import train.service.TicketCancle;
+import train.service.TicketDeleteService;
 import train.service.TicketInsertService;
 import train.service.TicketSelectService;
 
@@ -58,18 +59,23 @@ public class LoginService {
 			System.out.println();
 			System.out.println("              (2)등록된 열차 조회");
 			System.out.println();
-			System.out.println("              (3)이전 메뉴로 이동");
+			System.out.println("              (3)등록된 열차 삭제");
+			System.out.println();
+			System.out.println("              (4)이전 메뉴로 이동");
 			System.out.println("****************************************");
 			System.out.println("****************************************");
 			System.out.print("번호를 입력해주세요 :");
 			num = scan.nextInt();
-			if (num == 3) {
+			if (num == 4) {
 				return;
 			} else if (num == 1) {
 				train = new TicketInsertService();
 			} else if (num == 2) {
 				train = new TicketSelectService();
-			} else {
+			} else if(num == 3) {
+				train = new TicketDeleteService();
+			}
+			else {
 				System.out.println("잘못된 번호를 입력하셨습니다.");
 				continue;
 			}
