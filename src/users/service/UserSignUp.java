@@ -17,10 +17,9 @@ public class UserSignUp implements Train{
         while (true) {
             System.out.print("핸드폰번호를 입력하세요 : ");
             phone = scan.next();
-            String formattedPhone = UsersDTO.formatPhoneNumber(phone);
+            phone = UsersDTO.formatPhoneNumber(phone);
 
-            boolean exist = usersDAO.existPhone(formattedPhone);
-            System.out.println(exist);
+            boolean exist = usersDAO.existPhone(phone);
             if (exist) {
                 System.out.println();
                 System.out.println("이미 가입된 번호입니다.");
